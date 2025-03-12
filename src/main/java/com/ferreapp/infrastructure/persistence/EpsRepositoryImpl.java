@@ -31,13 +31,13 @@ public class EpsRepositoryImpl implements EpsRepository {
 
     @Override
     public Eps findById(int id) {
-        String sqlSelect = "SELECT name FROM eps WHERE id = ?";
+        String sqlSelect = "SELECT id,name FROM eps WHERE id = ?";
         try(Connection conn = connectionDb.getConexion();
             PreparedStatement ps = conn.prepareStatement(sqlSelect)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
-                return new Eps(rs.getInt(id), rs.getString("name"));
+                return new Eps(id, rs.getString("name"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
