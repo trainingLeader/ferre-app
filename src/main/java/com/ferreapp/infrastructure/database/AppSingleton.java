@@ -10,7 +10,7 @@ public enum AppSingleton {
     private final Properties propiedades = new Properties();
 
     AppSingleton() {
-        cargarConfiguraciones("config.properties");
+        cargarConfiguraciones("configmysql.properties");
     }
 
     private void cargarConfiguraciones(String rutaArchivo) {
