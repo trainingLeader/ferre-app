@@ -1,4 +1,4 @@
-package com.skeletonhexa.infrastructure.database;
+package com.ferreapp.infrastructure.database;
 
 public class ConnectMysqlFactory {
     public static ConnectionDb crearConexion() {
