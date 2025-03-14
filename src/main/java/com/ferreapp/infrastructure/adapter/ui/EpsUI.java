@@ -92,5 +92,8 @@ public class EpsUI {
         return  useCase.findAllAsMap();
         //epsMap.forEach((id, eps) -> System.out.println("ID: " + id + ", Nombre: " + eps.getName()));
     }
+    public List<Eps> FindAllEpsList(String termino, Map<Integer, Eps> epsMap) {
+        return useCase.buscarPorNombreParcialV2(termino, epsMap);
+    }
 
 }

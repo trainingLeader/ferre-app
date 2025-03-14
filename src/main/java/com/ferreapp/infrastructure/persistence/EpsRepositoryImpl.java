@@ -140,5 +140,11 @@ public class EpsRepositoryImpl implements EpsRepository {
             .sorted(Comparator.comparing(Eps::getName))
             .collect(Collectors.toList());
     }
+    @Override
+    public List<Eps> findByNameContainingV2(String searchTerm, Map<Integer, Eps> epsMap) {
+        return  epsMap.values().stream()
+            .filter(eps -> eps.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+            .collect(Collectors.toList());
+    }
 
 }

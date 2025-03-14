@@ -19,6 +19,7 @@ public interface EpsRepository {
      * Busca EPS que contengan el término de búsqueda en su nombre
      */
     List<Eps> findByNameContaining(String searchTerm);
+    List<Eps> findByNameContainingV2(String searchTerm, Map<Integer, Eps> epsMap);
     
     /**
      * Encuentra la primera EPS que coincida exactamente con el nombre

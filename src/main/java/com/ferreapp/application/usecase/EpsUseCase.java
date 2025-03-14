@@ -56,4 +56,7 @@ public class EpsUseCase {
     public List<Eps> buscarPorPrefijo(String prefijo) {
         return epsRepository.findByNameStartingWith(prefijo);
     }
+    public List<Eps> buscarPorNombreParcialV2(String termino, Map<Integer, Eps> epsMap) {
+        return epsRepository.findByNameContainingV2(termino, epsMap);
+    }
 }
