@@ -5,7 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.ferreapp.domain.entities.Eps;
 import com.ferreapp.domain.repositories.EpsRepository;
@@ -84,6 +89,56 @@ public class EpsRepositoryImpl implements EpsRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Map<Integer, Eps> findAllAsMap() {
+        Map<Integer, Eps> epsMap = new HashMap<>();
+        String sqlSelect = "SELECT id, name FROM eps";
+        try(Connection conn = connectionDb.getConexion();
+            PreparedStatement ps = conn.prepareStatement(sqlSelect);
+            ResultSet rs = ps.executeQuery()) {
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                Eps eps = new Eps(id, rs.getString("name"));
+                epsMap.put(id, eps);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return epsMap;
+    }
+
+    @Override
+    public List<Eps> findByNameContaining(String searchTerm) {
+        return findAllAsMap().values().stream()
+            .filter(eps -> eps.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Eps> findFirstByName(String name) {
+        return findAllAsMap().values().stream()
+            .filter(eps -> eps.getName().equalsIgnoreCase(name))
+            .findFirst();
+    }
+
+    @Override
+    public Map<Integer, Eps> findByIds(List<Integer> ids) {
+        return findAllAsMap().entrySet().stream()
+            .filter(entry -> ids.contains(entry.getKey()))
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue
+            ));
+    }
+
+    @Override
+    public List<Eps> findByNameStartingWith(String prefix) {
+        return findAllAsMap().values().stream()
+            .filter(eps -> eps.getName().toLowerCase().startsWith(prefix.toLowerCase()))
+            .sorted(Comparator.comparing(Eps::getName))
+            .collect(Collectors.toList());
     }
 
 }
